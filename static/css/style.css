@@ -1,0 +1,413 @@
+:root {
+    --bg-color: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent: #3b82f6;
+    --success: #22c55e;
+    --warning: #fbbf24;
+    --danger: #ef4444;
+    --radius: 20px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-left h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.header-left p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+
+.header-right {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.profile-icon,
+.status-indicator {
+    background: var(--card-bg);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    color: var(--text-secondary);
+}
+
+.status-indicator.online {
+    color: var(--success);
+}
+
+/* Grid Layout */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Grid Areas */
+.bedroom-card {
+    grid-column: span 2;
+    min-height: 250px;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=800&q=80') center/cover;
+    color: white;
+    justify-content: space-between;
+}
+
+.weather-card {
+    grid-column: span 2;
+}
+
+.mini-chart-card {
+    grid-column: span 1;
+}
+
+.ac-card {
+    grid-column: span 2;
+    grid-row: span 2;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.switches-card {
+    grid-column: span 1;
+    grid-row: span 2;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+/* Bedroom Card */
+.bedroom-card .card-content {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.room-info h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.room-temp {
+    font-size: 3rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.room-controls {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.icon-btn {
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.icon-btn.active {
+    background: white;
+    color: var(--text-primary);
+}
+
+/* Weather Card */
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.weather-icon {
+    font-size: 3rem;
+    color: var(--warning);
+}
+
+.weather-text h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.weather-text p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.weather-temp {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.forecast-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.forecast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+/* Mini Charts */
+.mini-chart-header h3 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    background: #dcfce7;
+    color: #15803d;
+    border-radius: 4px;
+    font-weight: 600;
+    float: right;
+}
+
+.mini-value {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0.5rem 0;
+}
+
+.chart-wrapper-mini {
+    height: 60px;
+    width: 100%;
+}
+
+/* AC Card */
+.card-header-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+}
+
+.dial-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 1rem 0;
+}
+
+.dial-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.dial-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dial-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.dial-temp {
+    font-size: 3.5rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.dial-unit {
+    position: absolute;
+    right: -15px;
+    top: 10px;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.ac-controls-row {
+    display: flex;
+    gap: 2rem;
+}
+
+.circle-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.circle-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.ac-bottom-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    margin-top: auto;
+}
+
+.mode-btn {
+    border: none;
+    background: transparent;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    flex: 1;
+}
+
+.mode-btn.active {
+    background: white;
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.power-btn {
+    background: var(--text-secondary) !important;
+    color: white !important;
+}
+
+/* Switches */
+.switch-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 1rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+.switch-icon {
+    background: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.switch-info h4 {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.switch-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .bedroom-card,
+    .weather-card,
+    .ac-card,
+    .switches-card {
+        grid-column: span 1;
+    }
+}

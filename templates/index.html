@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Icon support -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header / Status -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>Sweet Home</h1>
+                <p class="date-display" id="current-date">Saturday, Jan 28</p>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator online">
+                    <span class="material-icons-round">wifi</span>
+                </div>
+                <div class="profile-icon">
+                    <span class="material-icons-round">person</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid-layout">
+            <!-- Bedroom Main Card -->
+            <div class="card bedroom-card">
+                <div class="card-bg-overlay"></div>
+                <div class="card-content">
+                    <div class="room-info">
+                        <h2>Bedroom</h2>
+                        <p class="room-temp"><span id="main-temp">--</span>°F</p>
+                    </div>
+                    <div class="room-controls">
+                        <!-- Example controls -->
+                        <button class="icon-btn active"><span class="material-icons-round">lightbulb</span></button>
+                        <button class="icon-btn"><span class="material-icons-round">music_note</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather / Outside Card -->
+            <div class="card weather-card">
+                <div class="weather-header">
+                    <span class="material-icons-round weather-icon">wb_sunny</span>
+                    <div class="weather-text">
+                        <h3>Clear, night</h3>
+                        <p>Home</p>
+                    </div>
+                    <div class="weather-temp">
+                        <span id="temp-outside">--</span> <span class="unit">°C</span>
+                    </div>
+                </div>
+                <div class="forecast-row">
+                    <!-- Fake forecast items -->
+                    <div class="forecast-item">
+                        <span class="day">Tue</span>
+                        <span class="material-icons-round">wb_sunny</span>
+                        <span class="ftemp">21°</span>
+                    </div>
+                    <div class="forecast-item">
+                        <span class="day">Wed</span>
+                        <span class="material-icons-round">cloud</span>
+                        <span class="ftemp">25°</span>
+                    </div>
+                    <div class="forecast-item">
+                        <span class="day">Thu</span>
+                        <span class="material-icons-round">wb_sunny</span>
+                        <span class="ftemp">22°</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Chart: Inside Temp (CO2 style) -->
+            <div class="card mini-chart-card">
+                <div class="mini-chart-header">
+                    <h3>Inside Temp</h3>
+                    <span class="badge">Live</span>
+                </div>
+                <div class="mini-value">
+                    <span id="temp-inside-val">--</span> <small>°C</small>
+                </div>
+                <div class="chart-wrapper-mini">
+                    <canvas id="chartInside"></canvas>
+                </div>
+            </div>
+
+            <!-- Mini Chart: Outside Temp (Luminance style) -->
+            <div class="card mini-chart-card">
+                <div class="mini-chart-header">
+                    <h3>Outside Temp</h3>
+                    <span class="badge" style="background:#e0f2fe; color:#0284c7;">Log</span>
+                </div>
+                <div class="mini-value">
+                    <span id="temp-outside-val">--</span> <small>°C</small>
+                </div>
+                <div class="chart-wrapper-mini">
+                    <canvas id="chartOutside"></canvas>
+                </div>
+            </div>
+
+            <!-- Air Conditioner Control -->
+            <div class="card ac-card">
+                <div class="card-header-row">
+                    <h3>Air conditioner</h3>
+                    <span class="material-icons-round more-btn">more_vert</span>
+                </div>
+
+                <div class="dial-container">
+                    <div class="dial-wrapper">
+                        <!-- SVG Dial -->
+                        <svg viewBox="0 0 200 200" class="dial-svg">
+                            <path d="M 40 160 A 80 80 0 1 1 160 160" class="dial-track" fill="none" stroke="#e2e8f0"
+                                stroke-width="12" stroke-linecap="round" />
+                            <path d="M 40 160 A 80 80 0 1 1 160 160" class="dial-progress" fill="none" stroke="#64748b"
+                                stroke-width="12" stroke-linecap="round" stroke-dasharray="350"
+                                stroke-dashoffset="100" />
+                        </svg>
+                        <div class="dial-content">
+                            <span class="dial-label">Off</span>
+                            <span class="dial-temp" id="ac-target-temp">22<small>.0</small></span>
+                            <span class="dial-unit">°C</span>
+                        </div>
+                        <!-- Knob indicator approx position -->
+                        <div class="dial-knob" style="transform: rotate(-135deg) translate(80px) rotate(135deg)"></div>
+                    </div>
+                </div>
+
+                <div class="ac-controls-row">
+                    <button class="circle-btn"><span class="material-icons-round">remove</span></button>
+                    <button class="circle-btn"><span class="material-icons-round">add</span></button>
+                </div>
+
+                <div class="ac-bottom-bar">
+                    <button class="mode-btn active"><span class="material-icons-round">ac_unit</span></button>
+                    <button class="mode-btn"><span class="material-icons-round">wb_sunny</span></button>
+                    <button class="mode-btn"><span class="material-icons-round">air</span></button>
+                    <button class="mode-btn power-btn"><span
+                            class="material-icons-round">power_settings_new</span></button>
+                </div>
+            </div>
+
+            <!-- Quick Switches -->
+            <div class="card switches-card">
+                <div class="switch-row">
+                    <div class="switch-icon"><span class="material-icons-round">lightbulb</span></div>
+                    <div class="switch-info">
+                        <h4>Bedroom Light</h4>
+                        <p>Off</p>
+                    </div>
+                </div>
+                <div class="switch-row">
+                    <div class="switch-icon"><span class="material-icons-round">nightlight</span></div>
+                    <div class="switch-info">
+                        <h4>Salt Lamp</h4>
+                        <p>Off</p>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End Grid -->
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+
+</html>
