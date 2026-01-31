@@ -357,46 +357,368 @@ body {
 .power-btn {
     background: var(--text-secondary) !important;
     color: white !important;
+    transition: background 0.3s ease;
 }
 
-/* Switches */
-.switch-row {
+.power-btn.active {
+    background: var(--success) !important;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+/* Control Cards */
+.control-card {
+    grid-column: span 1;
+    grid-row: span 2;
+    justify-content: flex-start;
+}
+
+.control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.control-title {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    background: #f8fafc;
-    padding: 1rem;
-    border-radius: 1rem;
-    width: 100%;
-    cursor: pointer;
+    gap: 0.8rem;
 }
 
-.switch-icon {
-    background: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-secondary);
+.control-icon {
+    color: var(--accent);
+    font-size: 1.5rem;
 }
 
-.switch-info h4 {
-    font-size: 0.9rem;
+.control-header h3 {
+    font-size: 1.1rem;
     font-weight: 500;
 }
 
-.switch-info p {
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: 0.3s;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked+.toggle-slider {
+    background-color: var(--accent);
+}
+
+.toggle-switch input:checked+.toggle-slider:before {
+    transform: translateX(22px);
+}
+
+/* Control Body */
+.control-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.temp-display {
+    text-align: center;
+}
+
+.temp-label {
     font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.temp-value {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-top: 0.5rem;
+}
+
+/* Temperature Slider */
+.temp-slider-container {
+    margin: 1rem 0;
+}
+
+.temp-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #3b82f6, #ef4444);
+    outline: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.temp-slider:hover {
+    opacity: 1;
+}
+
+.temp-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--accent);
+}
+
+.temp-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--accent);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+/* Mode Selector */
+.mode-selector {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 1rem;
+}
+
+.mode-select-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.8rem 0.5rem;
+    border: none;
+    background: transparent;
+    border-radius: 0.8rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.75rem;
+}
+
+/* Mode Specific Active States */
+.mode-select-btn.active-cool,
+.mode-btn.active-cool {
+    background: #e0f2fe;
+    color: #0284c7;
+    box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+    border: 1px solid #bae6fd;
+}
+
+.mode-select-btn.active-heat,
+.mode-btn.active-heat {
+    background: #ffedd5;
+    color: #ea580c;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.2);
+    border: 1px solid #fed7aa;
+}
+
+.mode-select-btn.active-fan,
+.mode-btn.active-fan {
+    background: #f1f5f9;
+    color: #475569;
+    box-shadow: 0 2px 4px rgba(71, 85, 105, 0.2);
+    border: 1px solid #e2e8f0;
+}
+
+.mode-select-btn:hover {
+    transform: translateY(-2px);
+}
+
+.mode-select-btn:active {
+    transform: translateY(0);
+}
+
+/* Automation Specific */
+.auto-status {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f1f5f9;
+    border-radius: 1rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .grid-layout {
-        grid-template-columns: repeat(2, 1fr);
+.status-badge.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.auto-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #eff6ff;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+    color: #1e40af;
+}
+
+.auto-info .material-icons-round {
+    font-size: 1.2rem;
+}
+
+.auto-info p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Threshold Controls */
+.threshold-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.threshold-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: white;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    /* Fix: Ensure button is clickable */
+    position: relative;
+    z-index: 10;
+}
+
+.threshold-btn:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.05);
+}
+
+.threshold-btn:active {
+    transform: scale(0.95);
+}
+
+.threshold-input {
+    width: 100px;
+    height: 45px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.8rem;
+    background: #f8fafc;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.threshold-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+}
+
+/* Remove spinner arrows for number input */
+.threshold-input::-webkit-inner-spin-button,
+.threshold-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* AC Running Status Indicator */
+.ac-running-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.3s ease;
+}
+
+.ac-running-status.active {
+    opacity: 1;
+}
+
+.ac-running-status .material-icons-round {
+    font-size: 1.2rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
     }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 2s linear infinite;
 }
 
 @media (max-width: 600px) {
@@ -407,7 +729,7 @@ body {
     .bedroom-card,
     .weather-card,
     .ac-card,
-    .switches-card {
+    .control-card {
         grid-column: span 1;
     }
 }

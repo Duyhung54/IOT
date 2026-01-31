@@ -148,27 +148,108 @@
                 </div>
             </div>
 
-            <!-- Quick Switches -->
-            <div class="card switches-card">
-                <div class="switch-row">
-                    <div class="switch-icon"><span class="material-icons-round">lightbulb</span></div>
-                    <div class="switch-info">
-                        <h4>Bedroom Light</h4>
-                        <p>Off</p>
+            <!-- Manual Control -->
+            <div class="card control-card">
+                <div class="control-header">
+                    <div class="control-title">
+                        <span class="material-icons-round control-icon">settings_remote</span>
+                        <h3>Manual Control</h3>
+                    </div>
+                    <!-- Operational Status Indicator -->
+                    <div class="ac-running-status" id="ac-running-indicator">
+                        <span class="material-icons-round spin">ac_unit</span>
+                        <span class="status-text">RUNNING</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="manual-power-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="control-body" id="manual-control-body">
+                    <div class="temp-display">
+                        <span class="temp-label">Target Temperature</span>
+                        <div class="temp-value">
+                            <span id="manual-temp-display">22</span>°C
+                        </div>
+                    </div>
+                    <div class="temp-slider-container">
+                        <input type="range" id="manual-temp-slider" min="16" max="30" value="22" step="0.5"
+                            class="temp-slider">
+                        <div class="slider-labels">
+                            <span>16°C</span>
+                            <span>30°C</span>
+                        </div>
+                    </div>
+                    <div class="mode-selector">
+                        <button class="mode-select-btn active" data-mode="cool">
+                            <span class="material-icons-round">ac_unit</span>
+                            <span>Cool</span>
+                        </button>
+                        <button class="mode-select-btn" data-mode="heat">
+                            <span class="material-icons-round">wb_sunny</span>
+                            <span>Heat</span>
+                        </button>
+                        <button class="mode-select-btn" data-mode="fan">
+                            <span class="material-icons-round">air</span>
+                            <span>Fan</span>
+                        </button>
                     </div>
                 </div>
-                <div class="switch-row">
-                    <div class="switch-icon"><span class="material-icons-round">nightlight</span></div>
-                    <div class="switch-info">
-                        <h4>Salt Lamp</h4>
-                        <p>Off</p>
+            </div>
+
+            <!-- Automation -->
+            <div class="card control-card">
+                <div class="control-header">
+                    <div class="control-title">
+                        <span class="material-icons-round control-icon">auto_mode</span>
+                        <h3>Automation</h3>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="auto-enable-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="control-body" id="auto-control-body">
+                    <div class="auto-status">
+                        <div class="status-badge" id="auto-status-badge">
+                            <span class="material-icons-round">schedule</span>
+                            <span id="auto-status-text">Inactive</span>
+                        </div>
+                    </div>
+                    <div class="temp-display">
+                        <span class="temp-label">Threshold Temperature</span>
+                        <div class="temp-value">
+                            <span id="auto-temp-display">25</span>°C
+                        </div>
+                    </div>
+                    <div class="threshold-controls">
+                        <button type="button" class="threshold-btn" id="auto-temp-decrease">
+                            <span class="material-icons-round">remove</span>
+                        </button>
+                        <input type="number" id="auto-temp-input" min="20" max="32" step="0.5" value="25"
+                            class="threshold-input">
+                        <button type="button" class="threshold-btn" id="auto-temp-increase">
+                            <span class="material-icons-round">add</span>
+                        </button>
+                    </div>
+                    <div class="temp-slider-container">
+                        <input type="range" id="auto-temp-slider" min="20" max="32" value="25" step="0.5"
+                            class="temp-slider">
+                        <div class="slider-labels">
+                            <span>20°C</span>
+                            <span>32°C</span>
+                        </div>
+                    </div>
+                    <div class="auto-info">
+                        <span class="material-icons-round">info</span>
+                        <p>AC will turn on when inside temp exceeds threshold</p>
                     </div>
                 </div>
             </div>
 
         </div> <!-- End Grid -->
     </div>
-    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/dashboard.js?v=2"></script>
 </body>
 
 </html>
