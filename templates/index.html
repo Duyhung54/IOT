@@ -31,22 +31,6 @@
         </header>
 
         <div class="grid-layout">
-            <!-- Bedroom Main Card -->
-            <div class="card bedroom-card">
-                <div class="card-bg-overlay"></div>
-                <div class="card-content">
-                    <div class="room-info">
-                        <h2>Bedroom</h2>
-                        <p class="room-temp"><span id="main-temp">--</span>°F</p>
-                    </div>
-                    <div class="room-controls">
-                        <!-- Example controls -->
-                        <button class="icon-btn active"><span class="material-icons-round">lightbulb</span></button>
-                        <button class="icon-btn"><span class="material-icons-round">music_note</span></button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Weather / Outside Card -->
             <div class="card weather-card">
                 <div class="weather-header">
@@ -60,26 +44,11 @@
                     </div>
                 </div>
                 <div class="forecast-row">
-                    <!-- Fake forecast items -->
-                    <div class="forecast-item">
-                        <span class="day">Tue</span>
-                        <span class="material-icons-round">wb_sunny</span>
-                        <span class="ftemp">21°</span>
-                    </div>
-                    <div class="forecast-item">
-                        <span class="day">Wed</span>
-                        <span class="material-icons-round">cloud</span>
-                        <span class="ftemp">25°</span>
-                    </div>
-                    <div class="forecast-item">
-                        <span class="day">Thu</span>
-                        <span class="material-icons-round">wb_sunny</span>
-                        <span class="ftemp">22°</span>
-                    </div>
+                    <!-- Forecast items will be populated by JavaScript -->
                 </div>
             </div>
 
-            <!-- Mini Chart: Inside Temp (CO2 style) -->
+            <!-- Mini Chart: Inside Temp -->
             <div class="card mini-chart-card">
                 <div class="mini-chart-header">
                     <h3>Inside Temp</h3>
@@ -93,7 +62,7 @@
                 </div>
             </div>
 
-            <!-- Mini Chart: Outside Temp (Luminance style) -->
+            <!-- Mini Chart: Outside Temp -->
             <div class="card mini-chart-card">
                 <div class="mini-chart-header">
                     <h3>Outside Temp</h3>
@@ -107,149 +76,69 @@
                 </div>
             </div>
 
-            <!-- Air Conditioner Control -->
-            <div class="card ac-card">
+            <!-- Actuator Control Card -->
+            <div class="card actuator-control-card">
                 <div class="card-header-row">
-                    <h3>Air conditioner</h3>
-                    <span class="material-icons-round more-btn">more_vert</span>
+                    <h3>🏠 Actuator Control</h3>
+                    <button id="btn-refresh" class="refresh-btn" type="button">
+                        <span class="material-icons-round">refresh</span>
+                    </button>
                 </div>
 
-                <div class="dial-container">
-                    <div class="dial-wrapper">
-                        <!-- SVG Dial -->
-                        <svg viewBox="0 0 200 200" class="dial-svg">
-                            <path d="M 40 160 A 80 80 0 1 1 160 160" class="dial-track" fill="none" stroke="#e2e8f0"
-                                stroke-width="12" stroke-linecap="round" />
-                            <path d="M 40 160 A 80 80 0 1 1 160 160" class="dial-progress" fill="none" stroke="#64748b"
-                                stroke-width="12" stroke-linecap="round" stroke-dasharray="350"
-                                stroke-dashoffset="100" />
-                        </svg>
-                        <div class="dial-content">
-                            <span class="dial-label">Off</span>
-                            <span class="dial-temp" id="ac-target-temp">22<small>.0</small></span>
-                            <span class="dial-unit">°C</span>
-                        </div>
-                        <!-- Knob indicator approx position -->
-                        <div class="dial-knob" style="transform: rotate(-135deg) translate(80px) rotate(135deg)"></div>
+                <div class="control-row">
+                    <label class="control-label">Mode</label>
+                    <select id="mode_request" class="control-select">
+                        <option value="auto">Auto</option>
+                        <option value="manual">Manual</option>
+                        <option value="ai">AI</option>
+                    </select>
+                </div>
+
+                <div class="control-grid">
+                    <div class="control-row">
+                        <label class="control-label">AC</label>
+                        <select id="ac" class="control-select">
+                            <option value="0">Off</option>
+                            <option value="1">On</option>
+                        </select>
+                    </div>
+                    <div class="control-row">
+                        <label class="control-label">Fan</label>
+                        <select id="fan" class="control-select">
+                            <option value="0">Off</option>
+                            <option value="1">On</option>
+                        </select>
+                    </div>
+                    <div class="control-row">
+                        <label class="control-label">Temp Threshold (°C)</label>
+                        <input id="temp_threshold" type="number" step="0.1" class="control-input" />
                     </div>
                 </div>
 
-                <div class="ac-controls-row">
-                    <button class="circle-btn"><span class="material-icons-round">remove</span></button>
-                    <button class="circle-btn"><span class="material-icons-round">add</span></button>
+                <div class="control-row">
+                    <label class="control-label">AI Instruction (optional)</label>
+                    <textarea id="end_user_ai_instruction" class="control-textarea"
+                        placeholder="Optional guidance for AI mode"></textarea>
                 </div>
 
-                <div class="ac-bottom-bar">
-                    <button class="mode-btn active"><span class="material-icons-round">ac_unit</span></button>
-                    <button class="mode-btn"><span class="material-icons-round">wb_sunny</span></button>
-                    <button class="mode-btn"><span class="material-icons-round">air</span></button>
-                    <button class="mode-btn power-btn"><span
-                            class="material-icons-round">power_settings_new</span></button>
+                <div class="control-actions">
+                    <button id="btn-save" type="button" class="save-btn">Save Settings</button>
+                    <span id="status" class="status-text"></span>
                 </div>
-            </div>
 
-            <!-- Manual Control -->
-            <div class="card control-card">
-                <div class="control-header">
-                    <div class="control-title">
-                        <span class="material-icons-round control-icon">settings_remote</span>
-                        <h3>Manual Control</h3>
-                    </div>
-                    <!-- Operational Status Indicator -->
-                    <div class="ac-running-status" id="ac-running-indicator">
-                        <span class="material-icons-round spin">ac_unit</span>
-                        <span class="status-text">RUNNING</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="manual-power-toggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="control-body" id="manual-control-body">
-                    <div class="temp-display">
-                        <span class="temp-label">Target Temperature</span>
-                        <div class="temp-value">
-                            <span id="manual-temp-display">22</span>°C
-                        </div>
-                    </div>
-                    <div class="temp-slider-container">
-                        <input type="range" id="manual-temp-slider" min="16" max="30" value="22" step="0.5"
-                            class="temp-slider">
-                        <div class="slider-labels">
-                            <span>16°C</span>
-                            <span>30°C</span>
-                        </div>
-                    </div>
-                    <div class="mode-selector">
-                        <button class="mode-select-btn active" data-mode="cool">
-                            <span class="material-icons-round">ac_unit</span>
-                            <span>Cool</span>
-                        </button>
-                        <button class="mode-select-btn" data-mode="heat">
-                            <span class="material-icons-round">wb_sunny</span>
-                            <span>Heat</span>
-                        </button>
-                        <button class="mode-select-btn" data-mode="fan">
-                            <span class="material-icons-round">air</span>
-                            <span>Fan</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Automation -->
-            <div class="card control-card">
-                <div class="control-header">
-                    <div class="control-title">
-                        <span class="material-icons-round control-icon">auto_mode</span>
-                        <h3>Automation</h3>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="auto-enable-toggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="control-body" id="auto-control-body">
-                    <div class="auto-status">
-                        <div class="status-badge" id="auto-status-badge">
-                            <span class="material-icons-round">schedule</span>
-                            <span id="auto-status-text">Inactive</span>
-                        </div>
-                    </div>
-                    <div class="temp-display">
-                        <span class="temp-label">Threshold Temperature</span>
-                        <div class="temp-value">
-                            <span id="auto-temp-display">25</span>°C
-                        </div>
-                    </div>
-                    <div class="threshold-controls">
-                        <button type="button" class="threshold-btn" id="auto-temp-decrease">
-                            <span class="material-icons-round">remove</span>
-                        </button>
-                        <input type="number" id="auto-temp-input" min="20" max="32" step="0.5" value="25"
-                            class="threshold-input">
-                        <button type="button" class="threshold-btn" id="auto-temp-increase">
-                            <span class="material-icons-round">add</span>
-                        </button>
-                    </div>
-                    <div class="temp-slider-container">
-                        <input type="range" id="auto-temp-slider" min="20" max="32" value="25" step="0.5"
-                            class="temp-slider">
-                        <div class="slider-labels">
-                            <span>20°C</span>
-                            <span>32°C</span>
-                        </div>
-                    </div>
-                    <div class="auto-info">
-                        <span class="material-icons-round">info</span>
-                        <p>AC will turn on when inside temp exceeds threshold</p>
-                    </div>
-                </div>
+                <!-- Raw API Response (collapsible) -->
+                <details class="api-response">
+                    <summary>Raw API Response</summary>
+                    <pre id="raw">(empty)</pre>
+                </details>
             </div>
 
         </div> <!-- End Grid -->
     </div>
-    <script src="/static/js/dashboard.js?v=2"></script>
+
+    <!-- Firebase SDK (modular) -->
+    <script type="module" src="/static/js/firebase-integration.js"></script>
+    <script src="/static/js/dashboard.js?v=3"></script>
 </body>
 
 </html>

@@ -20,6 +20,17 @@ class ACSettings(SQLModel, table=True):
     automation_enabled: bool = Field(default=False)
     last_updated: datetime = Field(default_factory=datetime.utcnow)
 
+class ActuatorState(SQLModel, table=True):
+    """Actuator control state for AC and Fan"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    mode_request: str = Field(default="manual")  # "auto", "manual", or "ai"
+    ac: int = Field(default=0)  # 0 or 1
+    fan: int = Field(default=0)  # 0 or 1
+    temp_threshold: float = Field(default=25.0)
+    end_user_ai_instruction: str = Field(default="")
+    source: str = Field(default="web_client")
+    last_updated: datetime = Field(default_factory=datetime.utcnow)
+
 sqlite_file_name = "iot.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 

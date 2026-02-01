@@ -1,14 +1,18 @@
 :root {
-    --bg-color: #f1f5f9;
-    --card-bg: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
+    --bg-color: #0f172a;
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
     --accent: #3b82f6;
-    --success: #22c55e;
-    --warning: #fbbf24;
+    --accent-glow: rgba(59, 130, 246, 0.3);
+    --success: #10b981;
+    --warning: #f59e0b;
     --danger: #ef4444;
     --radius: 20px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    --glow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
 * {
@@ -19,7 +23,8 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--bg-color);
+    background: var(--bg-gradient);
+    background-attachment: fixed;
     color: var(--text-primary);
     min-height: 100vh;
     padding: 2rem;
@@ -36,17 +41,27 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
 .header-left h1 {
     font-weight: 700;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .header-left p {
     color: var(--text-secondary);
     font-size: 0.9rem;
-    margin-top: 0.2rem;
+    margin-top: 0.3rem;
 }
 
 .header-right {
@@ -57,19 +72,28 @@ body {
 
 .profile-icon,
 .status-indicator {
-    background: var(--card-bg);
-    width: 40px;
-    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     color: var(--text-secondary);
+    transition: all 0.3s;
+}
+
+.profile-icon:hover,
+.status-indicator:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
 }
 
 .status-indicator.online {
     color: var(--success);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
 }
 
 /* Grid Layout */
@@ -82,19 +106,39 @@ body {
 
 .card {
     background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius);
     padding: 1.5rem;
     box-shadow: var(--shadow);
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow), var(--glow);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.card:hover::before {
+    opacity: 1;
 }
 
 /* Custom Grid Areas */
@@ -108,75 +152,8 @@ body {
 
 .weather-card {
     grid-column: span 2;
-}
-
-.mini-chart-card {
-    grid-column: span 1;
-}
-
-.ac-card {
-    grid-column: span 2;
-    grid-row: span 2;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.switches-card {
-    grid-column: span 1;
-    grid-row: span 2;
-    justify-content: flex-start;
-    gap: 1rem;
-}
-
-/* Bedroom Card */
-.bedroom-card .card-content {
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-}
-
-.room-info h2 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.room-temp {
-    font-size: 3rem;
-    font-weight: 300;
-    margin-top: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.room-controls {
-    display: flex;
-    gap: 0.8rem;
-}
-
-.icon-btn {
-    border: none;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-.icon-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.icon-btn.active {
-    background: white;
-    color: var(--text-primary);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 /* Weather Card */
@@ -188,13 +165,28 @@ body {
 }
 
 .weather-icon {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--warning);
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 .weather-text h3 {
     font-size: 1.2rem;
     font-weight: 500;
+    color: var(--text-primary);
 }
 
 .weather-text p {
@@ -203,14 +195,19 @@ body {
 }
 
 .weather-temp {
-    font-size: 2rem;
-    font-weight: 500;
+    font-size: 2.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .forecast-row {
     display: flex;
     justify-content: space-between;
     text-align: center;
+    gap: 0.5rem;
 }
 
 .forecast-item {
@@ -218,10 +215,41 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     color: var(--text-secondary);
+    flex: 1;
+    transition: all 0.3s;
+}
+
+.forecast-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
 /* Mini Charts */
+.mini-chart-card {
+    grid-column: span 1;
+}
+
+.mini-chart-card:nth-child(3) {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(251, 146, 60, 0.1) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.mini-chart-card:nth-child(4) {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.mini-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
 .mini-chart-header h3 {
     font-size: 0.9rem;
     color: var(--text-secondary);
@@ -231,18 +259,22 @@ body {
 
 .badge {
     font-size: 0.7rem;
-    padding: 2px 6px;
-    background: #dcfce7;
-    color: #15803d;
-    border-radius: 4px;
+    padding: 4px 8px;
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+    border-radius: 6px;
     font-weight: 600;
-    float: right;
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .mini-value {
-    font-size: 2rem;
-    font-weight: 500;
+    font-size: 2.5rem;
+    font-weight: 600;
     margin: 0.5rem 0;
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .chart-wrapper-mini {
@@ -721,6 +753,192 @@ body {
     animation: spin 2s linear infinite;
 }
 
+/* Actuator Control Card */
+.actuator-control-card {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.card-header-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-header-row h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.refresh-btn {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.refresh-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: rotate(180deg);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.control-row {
+    margin: 14px 0;
+}
+
+.control-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.control-select,
+.control-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    outline: none;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.control-select option {
+    background: #1e293b;
+    color: #f1f5f9;
+    padding: 10px;
+}
+
+.control-select:focus,
+.control-input:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.control-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    outline: none;
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.control-textarea:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.control-textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+.control-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.save-btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), #2563eb);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.save-btn:active {
+    transform: translateY(0);
+}
+
+.status-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.api-response {
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 14px;
+}
+
+.api-response summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 10px 0;
+    transition: color 0.3s;
+}
+
+.api-response summary:hover {
+    color: var(--accent);
+}
+
+.api-response pre {
+    background: rgba(0, 0, 0, 0.3);
+    color: #e2e8f0;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+}
+
 @media (max-width: 600px) {
     .grid-layout {
         grid-template-columns: 1fr;
@@ -729,7 +947,12 @@ body {
     .bedroom-card,
     .weather-card,
     .ac-card,
-    .control-card {
+    .control-card,
+    .actuator-control-card {
         grid-column: span 1;
+    }
+
+    .control-grid {
+        grid-template-columns: 1fr;
     }
 }

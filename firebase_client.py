@@ -2,10 +2,7 @@ import requests
 import json
 from datetime import datetime
 
-# Configuration from mock_rtdb_viewer.html
-FIREBASE_DB_URL = "https://mse-iot-smart-home-default-rtdb.asia-southeast1.firebasedatabase.app"
-SENSOR_PATH = "cooling_system/sensor_data"
-CMDS_PATH = "cooling_system/actuator_cmds"
+
 
 # Configuration from mock_rtdb_viewer.html
 FIREBASE_DB_URL = "https://mse-iot-smart-home-default-rtdb.asia-southeast1.firebasedatabase.app"
@@ -24,7 +21,8 @@ def push_telemetry(data: dict):
         data["ts"] = int(datetime.utcnow().timestamp())
         
     try:
-        requests.post(url, json=data, timeout=5)
+        # Use PUT to overwrite the node (single source of truth for current state)
+        requests.put(url, json=data, timeout=5)
     except Exception as e:
         print(f"⚠️ Firebase Sync Error: {e}")
 
