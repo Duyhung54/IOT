@@ -178,18 +178,35 @@ const renderRaw = (obj) => {
     if (rawEl) rawEl.textContent = JSON.stringify(obj, null, 2);
 };
 
+// Helper: Adjust temperature threshold (called by +/- buttons)
+window.stepValue = (amount) => {
+    const input = document.getElementById('temp_threshold');
+    if (!input) return;
+    let val = parseFloat(input.value) || 25.0;
+    val = Math.round((val + amount) * 10) / 10; // Avoid float precision errors
+    input.value = val;
+};
+
 const populateActuatorForm = (state) => {
     if (!state || typeof state !== 'object') return;
 
-    const modeEl = document.getElementById('mode_request');
-    const acEl = document.getElementById('ac');
-    const fanEl = document.getElementById('fan');
+    // Mode (Radio Buttons)
+    if (state.mode_request) {
+        const radio = document.querySelector(`input[name="mode"][value="${state.mode_request}"]`);
+        if (radio) radio.checked = true;
+    }
+
+    // AC & Fan (Toggles)
+    const acToggle = document.getElementById('ac-toggle');
+    const fanToggle = document.getElementById('fan-toggle');
+
+    if (acToggle) acToggle.checked = (state.ac === 1);
+    if (fanToggle) fanToggle.checked = (state.fan === 1);
+
+    // Threshold & AI
     const tempEl = document.getElementById('temp_threshold');
     const aiEl = document.getElementById('end_user_ai_instruction');
 
-    if (modeEl && state.mode_request) modeEl.value = state.mode_request;
-    if (acEl && state.ac !== undefined) acEl.value = String(state.ac);
-    if (fanEl && state.fan !== undefined) fanEl.value = String(state.fan);
     if (tempEl && state.temp_threshold !== undefined) tempEl.value = String(state.temp_threshold);
     if (aiEl && state.end_user_ai_instruction !== undefined) aiEl.value = String(state.end_user_ai_instruction);
 };
@@ -212,21 +229,29 @@ async function fetchActuatorState() {
 }
 
 async function saveActuatorState() {
-    const modeEl = document.getElementById('mode_request');
-    const acEl = document.getElementById('ac');
-    const fanEl = document.getElementById('fan');
+    // Mode
+    const selectedMode = document.querySelector('input[name="mode"]:checked');
+    const modeValue = selectedMode ? selectedMode.value : 'manual';
+
+    // Toggles
+    const acToggle = document.getElementById('ac-toggle');
+    const fanToggle = document.getElementById('fan-toggle');
+    const acValue = (acToggle && acToggle.checked) ? 1 : 0;
+    const fanValue = (fanToggle && fanToggle.checked) ? 1 : 0;
+
+    // Inputs
     const tempEl = document.getElementById('temp_threshold');
     const aiEl = document.getElementById('end_user_ai_instruction');
 
-    if (!modeEl || !acEl || !fanEl || !tempEl || !aiEl) {
+    if (!tempEl || !aiEl) {
         setStatus('❌ Form elements not found');
         return;
     }
 
     const payload = {
-        mode_request: modeEl.value,
-        ac: Number(acEl.value),
-        fan: Number(fanEl.value),
+        mode_request: modeValue,
+        ac: acValue,
+        fan: fanValue,
         temp_threshold: Number(tempEl.value),
         end_user_ai_instruction: aiEl.value || '',
         source: 'web_client'
@@ -266,6 +291,11 @@ if (btnRefresh) {
 
 if (btnSave) {
     btnSave.addEventListener('click', saveActuatorState);
+}
+
+const btnSaveAi = document.getElementById('btn-save-ai');
+if (btnSaveAi) {
+    btnSaveAi.addEventListener('click', saveActuatorState);
 }
 
 // Load actuator state on page load
