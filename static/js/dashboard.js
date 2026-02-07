@@ -209,6 +209,11 @@ const populateActuatorForm = (state) => {
 
     if (tempEl && state.temp_threshold !== undefined) tempEl.value = String(state.temp_threshold);
     if (aiEl && state.end_user_ai_instruction !== undefined) aiEl.value = String(state.end_user_ai_instruction);
+
+    // Update toggle states based on mode (will be defined later)
+    if (typeof updateToggleStates === 'function') {
+        updateToggleStates();
+    }
 };
 
 // Remote API URL
@@ -281,6 +286,115 @@ async function saveActuatorState() {
     }
 }
 
+// ========== Mode-based Toggle Control ==========
+// Function to update toggle states based on selected mode
+const updateToggleStates = () => {
+    const selectedMode = document.querySelector('input[name="mode"]:checked');
+    const modeValue = selectedMode ? selectedMode.value : 'manual';
+
+    const acToggle = document.getElementById('ac-toggle');
+    const fanToggle = document.getElementById('fan-toggle');
+    const tempThreshold = document.getElementById('temp_threshold');
+    const aiTextarea = document.getElementById('end_user_ai_instruction');
+
+    // Get parent containers for better visual control
+    const acSwitch = acToggle ? acToggle.closest('.switch-container') : null;
+    const fanSwitch = fanToggle ? fanToggle.closest('.switch-container') : null;
+    const thresholdContainer = tempThreshold ? tempThreshold.closest('.switch-container') : null;
+    const aiContainer = aiTextarea ? aiTextarea.closest('.ai-input-container') : null;
+
+    // Handle different modes
+    if (modeValue === 'auto') {
+        // AUTO MODE: Disable AC & Fan, keep Threshold & AI active
+        // Increase disable opacity for stronger visual feedback
+        if (acToggle) acToggle.disabled = true;
+        if (acSwitch) {
+            acSwitch.style.opacity = '0.3';
+            acSwitch.style.pointerEvents = 'none';
+        }
+
+        if (fanToggle) fanToggle.disabled = true;
+        if (fanSwitch) {
+            fanSwitch.style.opacity = '0.3';
+            fanSwitch.style.pointerEvents = 'none';
+        }
+
+        // Keep threshold active
+        if (tempThreshold) tempThreshold.disabled = false;
+        if (thresholdContainer) {
+            thresholdContainer.style.opacity = '1';
+            thresholdContainer.style.pointerEvents = 'auto';
+        }
+
+        // Keep AI input active
+        if (aiTextarea) aiTextarea.disabled = false;
+        if (aiContainer) {
+            aiContainer.style.opacity = '1';
+            aiContainer.style.pointerEvents = 'auto';
+        }
+
+    } else if (modeValue === 'ai') {
+        // AI PILOT MODE: Disable AC, Fan & Threshold, keep only AI textarea active
+        if (acToggle) acToggle.disabled = true;
+        if (acSwitch) {
+            acSwitch.style.opacity = '0.3';
+            acSwitch.style.pointerEvents = 'none';
+        }
+
+        if (fanToggle) fanToggle.disabled = true;
+        if (fanSwitch) {
+            fanSwitch.style.opacity = '0.3';
+            fanSwitch.style.pointerEvents = 'none';
+        }
+
+        // Disable threshold in AI mode
+        if (tempThreshold) tempThreshold.disabled = true;
+        if (thresholdContainer) {
+            thresholdContainer.style.opacity = '0.3';
+            thresholdContainer.style.pointerEvents = 'none';
+        }
+
+        // ONLY AI input is active
+        if (aiTextarea) aiTextarea.disabled = false;
+        if (aiContainer) {
+            aiContainer.style.opacity = '1';
+            aiContainer.style.pointerEvents = 'auto';
+        }
+
+    } else {
+        // MANUAL MODE: Enable all controls
+        if (acToggle) acToggle.disabled = false;
+        if (acSwitch) {
+            acSwitch.style.opacity = '1';
+            acSwitch.style.pointerEvents = 'auto';
+        }
+
+        if (fanToggle) fanToggle.disabled = false;
+        if (fanSwitch) {
+            fanSwitch.style.opacity = '1';
+            fanSwitch.style.pointerEvents = 'auto';
+        }
+
+        if (tempThreshold) tempThreshold.disabled = false;
+        if (thresholdContainer) {
+            thresholdContainer.style.opacity = '1';
+            thresholdContainer.style.pointerEvents = 'auto';
+        }
+
+        if (aiTextarea) aiTextarea.disabled = false;
+        if (aiContainer) {
+            aiContainer.style.opacity = '1';
+            aiContainer.style.pointerEvents = 'auto';
+        }
+    }
+};
+
+// Add event listeners to mode radio buttons
+const modeRadios = document.querySelectorAll('input[name="mode"]');
+modeRadios.forEach(radio => {
+    radio.addEventListener('change', updateToggleStates);
+});
+
 // Event listeners for actuator controls
 const btnRefresh = document.getElementById('btn-refresh');
 const btnSave = document.getElementById('btn-save');
@@ -300,6 +414,9 @@ if (btnSaveAi) {
 
 // Load actuator state on page load
 fetchActuatorState();
+
+// Initialize toggle states based on current mode
+updateToggleStates();
 
 // Auto-refresh actuator state every 30 seconds
 setInterval(fetchActuatorState, 30 * 1000);
